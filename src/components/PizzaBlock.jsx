@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddItem } from "../redux/slices/cartSlice";
+import { setAddItem, selectCartItemById } from "../redux/slices/cartSlice";
+import { Link } from "react-router-dom";
 
 const typeNames = ['тонкое', 'традиционное'];
 
@@ -12,7 +13,7 @@ function PizzaBlock(props) {
     const [activeType, setActiveType] = useState(0);
     const [activeSize, setActiveSize] = useState(0);
     
-    const cartItem = useSelector((state) => state.cart.items.find(obj => obj.id === id));
+    const cartItem = useSelector(selectCartItemById(id));
     const addedCount = cartItem ? cartItem.count : 0;
 
     const onClickAdd = () => {
@@ -30,7 +31,7 @@ function PizzaBlock(props) {
     return (
         <div className="pizza-block">
             <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-            <h4 className="pizza-block__title">{title}</h4>
+            <Link to={`/pizza/${id}`}><h4 className="pizza-block__title">{title}</h4></Link>
             <div className="pizza-block__selector">
                 <ul>
                     {
