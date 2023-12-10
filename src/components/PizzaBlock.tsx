@@ -5,7 +5,16 @@ import { Link } from "react-router-dom";
 
 const typeNames = ['тонкое', 'традиционное'];
 
-function PizzaBlock(props) {
+type PizzaBlockProps = {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    sizes: number[];
+    types: number[];
+}
+
+const PizzaBlock: React.FC<PizzaBlockProps> = (props) => {
     const { id, title, price, imageUrl, sizes, types } = props;
 
     const dispatch = useDispatch();
@@ -24,6 +33,7 @@ function PizzaBlock(props) {
             imageUrl,
             type: typeNames[activeType],
             size: sizes[activeSize],
+            count: 0,
         };
         dispatch(setAddItem(item));
     };

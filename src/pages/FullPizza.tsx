@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 
 
-const FullPizza = () => {
-    const [dataPizza, setDataPizza] = useState();
+const FullPizza: React.FC = () => {
+    const [dataPizza, setDataPizza] = useState<{
+        imageUrl: string;
+        title: string;
+        price: number;
+    }>();
     const { id } = useParams();
     const navigate = useNavigate();
 

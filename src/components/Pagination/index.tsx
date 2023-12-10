@@ -5,11 +5,16 @@ import { setCurrentPage } from '../../redux/slices/filterSlice';
 
 import styles from './Pagination.module.scss';
 
-const Pagination = () => {
-    const dispatch = useDispatch();
-    const { currentPage } = useSelector(state => state.filter);
+type PaginationProps = {
+    currentPage: number;
+    onChangePage: (page: number) => void;
+}
 
-    const onChangePage = (number) => {
+const Pagination: React.FC = () => {
+    const dispatch = useDispatch();
+    const { currentPage } = useSelector((state: any) => state.filter);
+
+    const onChangePage = (number: any) => {
         dispatch(setCurrentPage(number));
     }
 

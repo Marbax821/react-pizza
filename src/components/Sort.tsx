@@ -2,30 +2,39 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSort, selectSort } from "../redux/slices/filterSlice";
 
-export const list = [
+type SortItem = {
+    name: string;
+    sortProperty: string;
+};
+
+type PopupClick = React.MouseEvent<HTMLBodyElement> & {
+    path: Node[];
+}
+
+export const list: SortItem[] = [
     { name: 'популярности (DESC)', sortProperty: 'rating' },
     { name: 'популярности (ASC)', sortProperty: '-rating' },
     { name: 'цене (DESC)', sortProperty: 'price' },
-    { name: 'цене (ASK)', sortProperty: '-price' },
+    { name: 'цене (ASC)', sortProperty: '-price' },
     { name: 'алфавиту (DESC)', sortProperty: 'title' },
-    { name: 'алфавиту (ASK)', sortProperty: '-title' }
+    { name: 'алфавиту (ASC)', sortProperty: '-title' }
 ];
 
 function Sort() {
     const dispatch = useDispatch();
     const sort = useSelector(selectSort);
-    const sortRef = useRef();
+    const sortRef = useRef<HTMLDivElement>(null);
 
     const [openPopup, setOpenPopup] = useState(false);
 
-    const onSelected = (obj) => {
+    const onSelected = (obj: SortItem) => {
         dispatch(setSort(obj));
         setOpenPopup(false);
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (sortRef.current && !sortRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (sortRef.current && !sortRef.current.contains(event.target as HTMLElement)) {
                 setOpenPopup(false);
             }
         };
@@ -56,7 +65,7 @@ function Sort() {
                                     <li
                                         key={i}
                                         onClick={() => onSelected(obj)}
-                                        className={sort.sort === obj.sortProperty ? 'active' : ''} >
+                                        className={sort.sortProperty === obj.sortProperty ? 'active' : ''} >
                                         {obj.name}
                                     </li>
                                 ))

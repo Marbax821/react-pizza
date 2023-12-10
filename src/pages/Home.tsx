@@ -8,31 +8,31 @@ import { Sort } from '../components/Sort';
 import { PizzaBlock } from '../components/PizzaBlock';
 import { Skeleton } from '../components/PizzaSkeleton';
 import { Pagination } from '../components/Pagination';
-import { SearchContext } from '../App';
+
 import { setCategoryId, setFilters } from '../redux/slices/filterSlice';
 import { list } from '../components/Sort';
 import { pizzasFetching } from '../redux/slices/pizzaSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
-    const { categoryId, sort, currentPage, setSearchValue } = useSelector(state => state.filter);
-    const { items, status } = useSelector(state => state.pizza);
+    const { categoryId, sort, currentPage, setSearchValue } = useSelector((state: any) => state.filter);
+    const { items, status } = useSelector((state: any) => state.pizza);
 
     // const { searchValue } = useContext(SearchContext);
 
     const skeletonItem = [... new Array(6)].map((_, i) => (
         <Skeleton key={i} />
     ));
-    const pizzasItems = items.map((item, i) => (
+    const pizzasItems = items.map((item: any, i: number) => (
         <PizzaBlock key={i} {...item} />
     ));
 
-    const onChangeCategory = (id) => {
-        dispatch(setCategoryId(id));
+    const onChangeCategory = (idx: number) => {
+        dispatch(setCategoryId(idx));
     };
 
     const fetchPizzas = async () => {
@@ -41,6 +41,7 @@ const Home = () => {
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const search = setSearchValue ? `search=${setSearchValue}` : '';
 
+        // @ts-ignore
         dispatch(pizzasFetching({
             categoryBy,
             sortBy,
