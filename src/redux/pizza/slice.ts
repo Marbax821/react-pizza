@@ -1,20 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { RootState } from '../store';
+import { PizzaSLiceState, Status, Pizza, SearchPizzaParams } from './types';
 
-export const pizzasFetching = createAsyncThunk(
+
+
+const initialState: PizzaSLiceState = {
+    items: [],
+    status: Status.LOADING, // loading | success | error
+}
+
+export const pizzasFetching = createAsyncThunk<Pizza[], SearchPizzaParams>(
     'pizza/pizzasFetchingStatus',
     async (params) => {
         const { categoryBy, sortBy, order, search, currentPage } = params;
         const { data } = await axios.get(`https://6522c167f43b17938414dc2d.mockapi.io/items?page=${currentPage}&limit=4&${categoryBy}&sortBy=${sortBy}&order=${order}&${search}`);
 
-        return data;
+        return data as Pizza[];
     }
-)
-
-const initialState = {
-    items: [],
-    status: 'loading', // loading | success | error
-}
+);
 
 const pizzaSlice = createSlice({
     name: 'pizza',
@@ -24,23 +28,22 @@ const pizzaSlice = createSlice({
             state.items = action.payload;
         }
     },
-    extraReducers: {
-        [pizzasFetching.pending]: (state) => {
+    extraReducers: (builder) => {
+        builder.addCase(pizzasFetching.pending, (state, action) => {
             state.items = [];
-            state.status = 'loading';
-            //console.log('идет отправка');
-        },
-        [pizzasFetching.fulfilled]: (state, action) => {
+            state.status = Status.LOADING;
+        });
+
+        builder.addCase(pizzasFetching.fulfilled, (state, action) => {
             state.items = action.payload;
-            state.status = 'success';
-            //console.log('всё ок');
-        },
-        [pizzasFetching.rejected]: (state) => {
+            state.status = Status.SUCCESS;
+        });
+
+        builder.addCase(pizzasFetching.rejected, (state, action) => {
             state.items = [];
-            state.status = 'error';
-            //console.log('была ошибка');
-        }
-    },
+            state.status = Status.ERROR;
+        });
+    }
 });
 
 export const {

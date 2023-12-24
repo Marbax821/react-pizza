@@ -1,4 +1,5 @@
 import { useState } from "react";
+// import { useWhyDidYouUpdate } from 'ahooks';
 
 // для опционального использования стоит добавить ? - onClickCategory?:
 type CategoriesProps = {
@@ -19,6 +20,8 @@ const categories = [
 const Categories: React.FC<CategoriesProps> = ({ categoryId, onClickCategory, getCategories }) => {
     //если такой ф-ции не будет то всё что справа от нее не будет вызвано ( ?. )
     // getCategories?.(categories);
+
+    // useWhyDidYouUpdate('Categories', { categoryId, onClickCategory, getCategories });
 
     return (
         <div className="categories">
