@@ -28,6 +28,11 @@ const Home: React.FC = () => {
 
     // const { searchValue } = useContext(SearchContext);
 
+    // code splitting - создаст отдельный файл chunk
+    import('../utils/math').then(math => {
+        math.add(2, 4);
+    });
+
     const skeletonItem = [... new Array(6)].map((_, i) => (
         <Skeleton key={i} />
     ));
